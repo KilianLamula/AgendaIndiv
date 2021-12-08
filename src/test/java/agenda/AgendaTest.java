@@ -52,6 +52,29 @@ public class AgendaTest {
         assertEquals(4, agenda.eventsInDay(nov_1_2020).size(), "Il y a 4 événements ce jour là");
         assertTrue(agenda.eventsInDay(nov_1_2020).contains(neverEnding));
     }
-
+    
+    
+    //Rajout individuel des tests :
+    @Test 
+    public void testFindByTitleTrue(){
+        assertTrue(agenda.findByTitle("Simple event").contains(simple));
+    }
+    
+    @Test
+    public void testFindByTitleFalse(){
+        Event simple1 = new Event("Simple event1", nov_1__2020_22_30, min_120);
+        assertFalse(agenda.findByTitle("Simple event").contains(simple1));
+    }
+    
+    @Test 
+    public void testIsFreeForFalse(){
+        assertFalse(agenda.isFreeFor(simple));
+    }
+    
+    @Test 
+    public void testIsFreeForTrue(){
+        Event simple1 = new Event("Simple event1", LocalDateTime.of(2021, 4, 12, 23, 05), min_120);
+        assertTrue(agenda.isFreeFor(simple1));
+    }
 
 }

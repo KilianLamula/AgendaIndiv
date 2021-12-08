@@ -35,4 +35,51 @@ public class Agenda {
         }
         return thisDay;
     }
+    
+    
+        //METHODES INDIV
+    
+    
+    /**
+     * Trouver les événements de l'agenda en fonction de leur titre
+     * @param title le titre à rechercher
+     * @return les événements qui ont le même titre
+     */
+    public List<Event> findByTitle(String title) {
+        
+        ArrayList<Event> findByTitle = new ArrayList();
+        
+        for(Event e : lesEvenements){
+            if(e.getTitle().equals(title)){
+                findByTitle.add(e);
+            }
+        }        
+        return findByTitle;
+    }
+    
+    /**
+     * Déterminer s’il y a de la place dans l'agenda pour un événement
+     * @param e L'événement à tester (on se limitera aux événements simples)
+     * @return vrai s’il y a de la place dans l'agenda pour cet événement
+     */
+    public boolean isFreeFor(Event e) {
+        
+        for(Event event : lesEvenements){
+            //Cas date de début prévue en même temps
+            if(event.getStart().equals(e.getStart())) return false;
+            
+            //Cas date de fin prévue en même temps
+            if(event.getStart().plus(event.getDuration()).equals(e.getStart().plus(e.getDuration()))) return false;
+            
+            //Cas date prévue pendant l'event (date de début pendant l'event)
+            if(event.getStart().isAfter(e.getStart()) && event.getStart().isBefore(e.getStart().plus(e.getDuration()))) return false;
+            
+            //Cas d'un évènement prévu qui déborde sur l'évènement qu'on veut prévoir (date de fin pendant l'event)
+            if(event.getStart().plus(event.getDuration()).isBefore(e.getStart().plus(e.getDuration())) 
+                    && event.getStart().plus(event.getDuration()).isAfter(e.getStart())) return false;
+        }
+        
+        //Sinon place dispo :
+        return true;
+    }
 }
