@@ -68,7 +68,17 @@ public class AgendaTest {
     
     @Test 
     public void testIsFreeForFalse(){
+        //Cas même date de début ou de fin :
         assertFalse(agenda.isFreeFor(simple));
+        //Cas date prévue pendant un event (commence pendant simple) :
+        Event e1=new Event("after", LocalDateTime.of(2020, 11, 1, 23, 30), Duration.ofMinutes(120));
+        assertFalse(agenda.isFreeFor(e1));
+        //Cas date de fin pendant un event (déborde sur simple) :
+        Event e2=new Event("before", LocalDateTime.of(2020, 11, 1, 21, 30), Duration.ofMinutes(120));
+        assertFalse(agenda.isFreeFor(e2));
+        //Cas date de début avant de début avant et date de fin après :
+        Event e3=new Event("on", LocalDateTime.of(2020, 11, 1, 21, 30), Duration.ofMinutes(500));
+        assertFalse(agenda.isFreeFor(e3));
     }
     
     @Test 
